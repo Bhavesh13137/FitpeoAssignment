@@ -15,7 +15,7 @@ class MainAdapter(private val onClickListener: OnClickListener) : RecyclerView.A
     private var itemViewModels = mutableListOf<ApiResponseItem>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list : MutableList<ApiResponseItem>){
+    fun setList(list : List<ApiResponseItem>){
         this.itemViewModels.clear()
         this.itemViewModels.addAll(list)
         notifyDataSetChanged()

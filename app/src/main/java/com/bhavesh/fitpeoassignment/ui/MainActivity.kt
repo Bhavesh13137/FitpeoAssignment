@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bhavesh.fitpeoassignment.App
 import com.bhavesh.fitpeoassignment.adapter.MainAdapter
+import com.bhavesh.fitpeoassignment.api_helper.NetworkResult
 import com.bhavesh.fitpeoassignment.databinding.ActivityMainBinding
 import com.bhavesh.fitpeoassignment.model.ApiResponseItem
 import com.bhavesh.fitpeoassignment.viewmodel.MainViewModel
@@ -38,9 +39,17 @@ class MainActivity : AppCompatActivity() , MainAdapter.OnClickListener{
             layoutManager = GridLayoutManager(context,2)
             adapter = adapters
         }
+        viewModel.getPhoto()
         viewModel.photo.observe(this) {
-            println("IT -> $it")
-            adapters.setList(it.toMutableList())
+            when(it){
+                is NetworkResult.Success -> {
+                    adapters.setList(it.data!!)
+                }
+                is NetworkResult.Error -> {
+
+                }
+                else -> {}
+            }
         }
     }
 

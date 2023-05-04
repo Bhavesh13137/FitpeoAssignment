@@ -1,20 +1,24 @@
 package com.bhavesh.fitpeoassignment.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bhavesh.fitpeoassignment.api_helper.NetworkResult
 import com.bhavesh.fitpeoassignment.model.ApiResponseItem
 import com.bhavesh.fitpeoassignment.repository.MainRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
-    val photo : LiveData<List<ApiResponseItem>>
-    get() = repository.photo
+    private val _photo = MutableLiveData<NetworkResult<List<ApiResponseItem>>>()
+    val photo : LiveData<NetworkResult<List<ApiResponseItem>>>
+        get() = _photo
 
-    init{
+    fun getPhoto(){
         viewModelScope.launch {
-            repository.getPhotoApi()
+            val result = repository.getPhotoApi()
+            _photo.postValue(result)
         }
     }
 }
